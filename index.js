@@ -36,6 +36,30 @@ app.post("/herois", function(req, res){
   res.send("Item criado com sucesso");
 });
 
+//Read By ID ->[GET] /herois/:
+app.get("/herois/:id", function(req,res){
 
+// pegamos o parâmetro pelo id
+  const id = req.params.id -1;
+
+//pegamos dados da lista
+  const item = lista[id];
+
+// Resultado da endpoint
+  res.send(item);
+});
+
+
+//Update -> [PUT] /herois/:id
+app.put("/herois/:id", function (req, res){
+  const id = req.params.id -1;
+
+  const item = req.body.nome;
+
+//atualizamos a informação da lista
+  lista[id] = item;
+
+  res.send("item editado com sucesso!");
+});
 
 app.listen(3000)
