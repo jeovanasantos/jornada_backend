@@ -1,7 +1,22 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const {MongoClient} = require("mongodb");
 
-//habilitamos JSON
+const url = "mongodb://localhost:27017";
+const dbName= "jornada-backend";
+const client = new MongoClient(url);
+
+
+async function main(){
+  console.info("Conectando ao banco de dados...");
+  await client.connect();
+  console.info("Banco de dados conectado com sucesso!");
+ 
+  const db =client.db(dbName);
+  const collection = db.collection("herois");
+
+const app = express();
+
+//habilitamos o processamento de JSON
 app.use(express.json());
 
 //End point(rotas)principal
@@ -70,5 +85,8 @@ app.delete("/herois/:id", function(req,res){
   delete lista[id];
 
   res.send("Item excluido com sucesso")
-})
-app.listen(3000)
+ })
+app.listen(3000);
+}
+
+main();
