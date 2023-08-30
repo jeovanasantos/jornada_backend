@@ -33,8 +33,9 @@ const lista = ["Mulher Maravilha", "Capitã Marvel", "Homem de ferro"];
 
 
 //Read all -> GET /herois
-app.get("/herois", function(req,res) {
-  res.send(lista);
+app.get("/herois", async function(req,res) {
+  const itens = await collection.find().toArray();
+  res.send(itens);
 });
 
 //Create -> POST /herois
