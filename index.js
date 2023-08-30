@@ -1,5 +1,5 @@
 const express = require('express');
-const {MongoClient} = require("mongodb");
+const {MongoClient, ObjectId} = require("mongodb");
 
 const url = "mongodb://127.0.0.1:27017";
 const dbName= "jornada-backend";
@@ -39,17 +39,17 @@ app.get("/herois", async function(req,res) {
 });
 
 //Create -> POST /herois
-app.post("/herois", function(req, res){
+app.post("/herois", async function(req, res){
   //console.log(req.body, typeof req.body);
 
   //Extrair o nome do body da Request
-  const item = req.body.nome;
+  const item = req.body;
 
-  //Inserir item na lista
-  lista.push(item);
-
+//Inserir item na collection
+  await collection.insertOne(item);
+  
   //Enviamos uma mensagem de resposta
-  res.send("Item criado com sucesso");
+  res.send(item);
 });
 
 //Read By ID ->[GET] /herois/:
@@ -67,15 +67,13 @@ app.get("/herois/:id", function(req,res){
 
 
 //Update -> [PUT] /herois/:id
-app.put("/herois/:id", function (req, res){
-  const id = req.params.id -1;
+app.put("/herois/:id", async function (req, res){
+  const id = req.params.id;
 
+  await collection.updateOne({_id: new ObjectId(id)}, {$set: item});
   const item = req.body.nome;
 
-//atualizamos a informação da lista
-  lista[id] = item;
-
-  res.send("item editado com sucesso!");
+  res.send(item);
 });
 
 //delete -> [DELETE] /herois/:id
